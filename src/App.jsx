@@ -20,7 +20,10 @@ function App() {
 
 
   return (
+    <>
     <p>{weather ? weather.current.temperature_2m : "no data"}</p>
+    <pre>{weather ? JSON.stringify(weather, null, 2) : "loading..."}</pre>
+    </>
   )
 }
 
