@@ -1,34 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useState, useEffect } from "react";
 function App() {
-  const [count, setCount] = useState(0)
+  const [weather, setWeather] = useState();
+
+  useEffect(() => {
+    async function getWeatherData(){
+      try{
+        // public API so its okay i guess??? fix later haha
+        const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=46.9481&longitude=7.4474&current=temperature_2m%2Crelative_humidity_2m%2Crain%2Cweather_code");
+        const weatherData = await response.json();
+        setWeather(weatherData);
+        console.log(weatherData);
+      }
+      catch(e){
+        console.log(`error fetching data ${e}`)
+      }
+    }
+    getWeatherData();
+  }, []);
+
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <p>{weather ? weather.current.temperature_2m : "no data"}</p>
   )
 }
 
